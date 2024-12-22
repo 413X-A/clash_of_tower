@@ -14,78 +14,59 @@ body {
 }
 
 .game-container {
-    width: 600px;
     text-align: center;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 400px;
 }
 
-.player-tower, .bot-tower {
-    background-color: #8B0000;
-    width: 100px;
-    height: 150px;
+.stats {
+    margin-bottom: 20px;
+}
+
+.fields {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.field {
+    width: 60px;
+    height: 60px;
+    background-color: #c9e4b5;
+    border-radius: 5px;
     position: relative;
-}
-
-.tower-health {
-    color: white;
-    font-size: 20px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.battlefield {
-    display: flex;
-    justify-content: space-between;
-    height: 400px;
-    margin: 20px 0;
-    position: relative;
-}
-
-.player-cards, .bot-cards {
-    width: 50%;
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: flex-start;
-    align-items: center;
-    overflow-y: hidden;
-}
-
-.card {
-    background-color: #3498db;
-    width: 80px;
-    height: 120px;
-    margin: 5px;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 8px;
-    font-size: 16px;
     cursor: pointer;
-    position: relative;
 }
 
-.mana-bar {
-    margin-top: 20px;
-    font-size: 20px;
+.field.planted {
+    background-color: #ffeb3b;
 }
 
-.controls {
-    margin-top: 20px;
+.field.grown {
+    background-color: #388e3c;
 }
 
-.card-button {
-    background-color: #2ecc71;
+.controls button {
+    background-color: #4caf50;
     border: none;
     color: white;
-    font-size: 16px;
     padding: 10px;
+    font-size: 16px;
     margin: 5px;
     cursor: pointer;
     border-radius: 5px;
 }
 
-.card-button:hover {
-    background-color: #27ae60;
+.controls button:disabled {
+    background-color: #bdbdbd;
+    cursor: not-allowed;
+}
+
+.message {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #f44336;
 }
