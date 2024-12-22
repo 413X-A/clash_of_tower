@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.game-container {
+    width: 600px;
+    text-align: center;
+}
+
+.player-tower, .bot-tower {
+    background-color: #8B0000;
+    width: 100px;
+    height: 150px;
+    position: relative;
+}
+
+.tower-health {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.battlefield {
+    display: flex;
+    justify-content: space-between;
+    height: 400px;
+    margin: 20px 0;
+    position: relative;
+}
+
+.player-cards, .bot-cards {
+    width: 50%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-y: hidden;
+}
+
+.card {
+    background-color: #3498db;
+    width: 80px;
+    height: 120px;
+    margin: 5px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    position: relative;
+}
+
+.mana-bar {
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+.card-button {
+    background-color: #2ecc71;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.card-button:hover {
+    background-color: #27ae60;
+}
