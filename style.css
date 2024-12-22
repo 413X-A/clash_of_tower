@@ -36,6 +36,7 @@ h2 {
 .player-cards {
     display: flex;
     gap: 10px;
+    flex-direction: column;
 }
 
 .card {
@@ -45,6 +46,7 @@ h2 {
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
+    margin: 5px 0;
 }
 
 .card:hover {
@@ -57,7 +59,7 @@ h2 {
     width: 100%;
     margin: 20px 0;
     position: relative;
-    height: 300px;
+    height: 500px;
 }
 
 .tower {
@@ -80,10 +82,15 @@ h2 {
 
 .card-deployed {
     position: absolute;
-    bottom: 50px;
     background-color: #3498db;
     color: white;
     padding: 10px;
     border-radius: 5px;
     transition: all 2s linear;
+}
+
+.card-health {
+    font-size: 12px;
+    color: white;
+    margin-top: 5px;
 }
