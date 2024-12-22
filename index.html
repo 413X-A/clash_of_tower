@@ -3,29 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clash Royale - Einfaches Spiel</title>
+    <title>Kartenspiel</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
-        <div class="player-area">
-            <h2>Spieler 1</h2>
-            <div class="mana" id="player1Mana">Mana: 10</div>
-            <div class="player-cards">
-                <button class="card" onclick="deployCard('player1', 1)">Krieger 1 (Mana: 3, Schaden: 50)</button>
-                <button class="card" onclick="deployCard('player1', 2)">Krieger 2 (Mana: 5, Schaden: 80)</button>
-                <button class="card" onclick="deployCard('player1', 3)">Krieger 3 (Mana: 7, Schaden: 120)</button>
+        <div class="tower bot-tower">
+            <p>Bot-Turm</p>
+            <p class="tower-health">HP: <span id="bot-tower-health">100</span></p>
+        </div>
+        
+        <div class="field">
+            <div id="bot-cards" class="card-container">
+                <!-- Bot-Karten -->
+                <div class="card" id="bot-card-1" data-mana="5" data-damage="3" data-health="6">Krieger A</div>
+                <div class="card" id="bot-card-2" data-mana="10" data-damage="7" data-health="12">Krieger B</div>
+                <div class="card" id="bot-card-3" data-mana="15" data-damage="10" data-health="18">Krieger C</div>
+            </div>
+
+            <div id="player-cards" class="card-container">
+                <!-- Spieler-Karten -->
+                <div class="card" id="player-card-1" data-mana="5" data-damage="3" data-health="6">Krieger X</div>
+                <div class="card" id="player-card-2" data-mana="10" data-damage="7" data-health="12">Krieger Y</div>
+                <div class="card" id="player-card-3" data-mana="15" data-damage="10" data-health="18">Krieger Z</div>
             </div>
         </div>
-        <div class="battlefield">
-            <div class="tower player1-tower" id="player1Tower">
-                <div class="health-bar" id="player1Health">1000</div>
-            </div>
-            <div class="tower player2-tower" id="player2Tower">
-                <div class="health-bar" id="player2Health">1000</div>
-            </div>
+
+        <div class="tower player-tower">
+            <p>Spieler-Turm</p>
+            <p class="tower-health">HP: <span id="player-tower-health">100</span></p>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
