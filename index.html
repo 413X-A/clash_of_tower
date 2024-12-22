@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Clash Royale</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Spielerbereich 1 (unten) -->
+        <div class="player-area" id="player1Area">
+            <h2>Spieler 1</h2>
+            <div class="mana">Mana: <span id="player1Mana">10</span></div>
+            <div class="player-cards">
+                <div class="card" onclick="deployCard('player1', 1)">Krieger 1 (Mana: 3, Schaden: 50)</div>
+                <div class="card" onclick="deployCard('player1', 2)">Krieger 2 (Mana: 5, Schaden: 80)</div>
+                <div class="card" onclick="deployCard('player1', 3)">Krieger 3 (Mana: 7, Schaden: 120)</div>
+            </div>
+        </div>
+        
+        <!-- Spielfeld -->
+        <div class="battlefield">
+            <div class="tower player1-tower" id="player1Tower"></div>
+            <div class="tower player2-tower" id="player2Tower"></div>
+        </div>
+
+        <!-- Spielerbereich 2 (oben, Bot) -->
+        <div class="player-area" id="player2Area">
+            <h2>Spieler 2 (Bot)</h2>
+            <div class="player-cards">
+                <div class="card" onclick="deployCard('player2', 1)">Krieger 1 (Mana: 3, Schaden: 50)</div>
+                <div class="card" onclick="deployCard('player2', 2)">Krieger 2 (Mana: 5, Schaden: 80)</div>
+                <div class="card" onclick="deployCard('player2', 3)">Krieger 3 (Mana: 7, Schaden: 120)</div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
