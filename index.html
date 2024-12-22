@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clash Royale - Krieger Simulation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Turm des Spielers -->
+        <div class="player-tower">
+            <div class="tower-health" id="player-tower-health">1000</div>
+        </div>
+
+        <!-- Spielfeld -->
+        <div class="battlefield">
+            <div class="player-cards" id="player-cards"></div>
+            <div class="bot-cards" id="bot-cards"></div>
+        </div>
+
+        <!-- Mana-Leiste -->
+        <div class="mana-bar">
+            <div class="mana" id="mana">10</div>
+        </div>
+
+        <!-- Steuerung -->
+        <div class="controls">
+            <button class="card-button" onclick="deployCard('warrior1')">Krieger 1 (3 Mana)</button>
+            <button class="card-button" onclick="deployCard('warrior2')">Krieger 2 (5 Mana)</button>
+            <button class="card-button" onclick="deployCard('warrior3')">Krieger 3 (8 Mana)</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
