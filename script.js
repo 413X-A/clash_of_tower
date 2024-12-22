@@ -1,85 +1,78 @@
-let playerTowerHealth = 100;
-let botTowerHealth = 100;
+const playerCards = [];
+const botCards = [];
+const playerTowerHealth = document.getElementById("player-tower-health");
+const manaBar = document.getElementById("mana");
+let playerMana = 10;
+let gameInterval;
 
-// Funktion, um die Lebenspunkte des Turms zu aktualisieren
-function updateTowerHealth() {
-    document.getElementById("player-tower-health").textContent = playerTowerHealth;
-    document.getElementById("bot-tower-health").textContent = botTowerHealth;
+const cardsData = {
+    warrior1: { mana: 3, damage: 5, health: 30 },
+    warrior2: { mana: 5, damage: 8, health: 50 },
+    warrior3: { mana: 8, damage: 12, health: 70 },
+};
+
+function updateMana() {
+    manaBar.textContent = playerMana;
 }
 
-// Funktion, um den Schaden zu berechnen, wenn zwei Karten kollidieren
-function handleCollision(playerCard, botCard) {
-    let playerDamage = parseInt(playerCard.dataset.damage);
-    let botDamage = parseInt(botCard.dataset.damage);
-    
-    // Schaden auf die Karten anwenden
-    let playerHealth = parseInt(playerCard.dataset.health) - botDamage;
-    let botHealth = parseInt(botCard.dataset.health) - playerDamage;
-    
-    // Wenn eine Karte zerstört wird
-    if (playerHealth <= 0) {
-        playerCard.remove();
-    } else {
-        playerCard.dataset.health = playerHealth;
-    }
+function deployCard(cardName) {
+    if (playerMana >= cardsData[cardName].mana) {
+        playerMana -= cardsData[cardName].mana;
+        updateMana();
 
-    if (botHealth <= 0) {
-        botCard.remove();
-    } else {
-        botCard.dataset.health = botHealth;
-    }
+        const cardElement = document.createElement("div");
+        cardElement.classList.add("card");
+        cardElement.textContent = cardName + "\n" + cardsData[cardName].damage + " dmg";
+        cardElement.dataset.name = cardName;
+        cardElement.dataset.health = cardsData[cardName].health;
+        cardElement.dataset.damage = cardsData[cardName].damage;
 
-    // Wenn eine Karte den Turm erreicht
-    if (!playerCard.parentElement) {
-        botTowerHealth -= parseInt(botCard.dataset.damage);
-        if (botTowerHealth <= 0) {
-            alert("Spieler gewinnt!");
-            location.reload();
-        }
-    } else if (!botCard.parentElement) {
-        playerTowerHealth -= parseInt(playerCard.dataset.damage);
-        if (playerTowerHealth <= 0) {
-            alert("Bot gewinnt!");
-            location.reload();
-        }
+        document.getElementById("player-cards").appendChild(cardElement);
+        moveCard(cardElement, "player");
     }
-
-    updateTowerHealth();
 }
 
-// Kartenbewegung und Interaktionen
-function moveCards() {
-    let playerCards = document.querySelectorAll('#player-cards .card');
-    let botCards = document.querySelectorAll('#bot-cards .card');
+function moveCard(cardElement, side) {
+    let position = 0;
+    const direction = side === "player" ? 1 : -1;
+    const targetSide = side === "player" ? "bot" : "player";
+    const battlefield = document.querySelector(`.${side}-cards`);
 
-    playerCards.forEach(card => {
-        let currentPosition = parseInt(card.style.top) || 0;
-        if (currentPosition < 400) {
-            card.style.top = currentPosition + 5 + "px";
-        }
+    const moveInterval = setInterval(() => {
+        position += direction;
+        cardElement.style.transform = `translateY(${position}px)`;
 
-        botCards.forEach(botCard => {
-            let botPosition = parseInt(botCard.style.top) || 0;
-            if (Math.abs(currentPosition - botPosition) < 50) {
-                handleCollision(card, botCard);
+        if (position >= 300) { // Reached enemy tower
+            if (side === "player") {
+                const botTower = document.getElementById("player-tower-health");
+                const newHealth = Math.max(0, parseInt(botTower.textContent) - cardElement.dataset.damage);
+                botTower.textContent = newHealth;
+                if (newHealth === 0) {
+                    clearInterval(gameInterval);
+                    alert("Spiel beendet! Du hast gewonnen!");
+                }
             }
-        });
-    });
-
-    botCards.forEach(card => {
-        let currentPosition = parseInt(card.style.top) || 0;
-        if (currentPosition < 400) {
-            card.style.top = currentPosition + 5 + "px";
+            clearInterval(moveInterval);
         }
-    });
+    }, 20);
 }
 
-// Spiel starten
-setInterval(moveCards, 100);
+function gameLoop() {
+    // Bot logic to deploy cards (for simplicity, random)
+    const randomCard = Math.random() < 0.5 ? "warrior1" : Math.random() < 0.75 ? "warrior2" : "warrior3";
+    deployBotCard(randomCard);
+}
 
-// Karten auswählen
-document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('click', () => {
-        card.classList.toggle('selected');
-    });
-});
+function deployBotCard(cardName) {
+    const cardElement = document.createElement("div");
+    cardElement.classList.add("card");
+    cardElement.textContent = cardName + "\n" + cardsData[cardName].damage + " dmg";
+    cardElement.dataset.name = cardName;
+    cardElement.dataset.health = cardsData[cardName].health;
+    cardElement.dataset.damage = cardsData[cardName].damage;
+
+    document.getElementById("bot-cards").appendChild(cardElement);
+    moveCard(cardElement, "bot");
+}
+
+gameInterval = setInterval(gameLoop, 3000); // Bot deploys cards every 3 seconds
