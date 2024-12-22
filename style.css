@@ -87,7 +87,7 @@ h2 {
     color: white;
     padding: 10px;
     border-radius: 5px;
-    transition: all 2s linear;
+    transition: transform 2s linear; /* Verwende 'transform' statt 'position' für Animation */
 }
 
 .card-health {
