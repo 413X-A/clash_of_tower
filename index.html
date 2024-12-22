@@ -3,35 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kartenspiel</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Clash Royale - Krieger Simulation</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="game-container">
-        <div class="tower bot-tower">
-            <p>Bot-Turm</p>
-            <p class="tower-health">HP: <span id="bot-tower-health">100</span></p>
+        <div class="player-tower">
+            <div class="tower-health" id="player-tower-health">1000</div>
         </div>
         
-        <div class="field">
-            <div id="bot-cards" class="card-container">
-                <!-- Bot-Karten -->
-                <div class="card" id="bot-card-1" data-mana="5" data-damage="3" data-health="6">Krieger A</div>
-                <div class="card" id="bot-card-2" data-mana="10" data-damage="7" data-health="12">Krieger B</div>
-                <div class="card" id="bot-card-3" data-mana="15" data-damage="10" data-health="18">Krieger C</div>
-            </div>
-
-            <div id="player-cards" class="card-container">
-                <!-- Spieler-Karten -->
-                <div class="card" id="player-card-1" data-mana="5" data-damage="3" data-health="6">Krieger X</div>
-                <div class="card" id="player-card-2" data-mana="10" data-damage="7" data-health="12">Krieger Y</div>
-                <div class="card" id="player-card-3" data-mana="15" data-damage="10" data-health="18">Krieger Z</div>
-            </div>
+        <div class="battlefield">
+            <div class="player-cards" id="player-cards"></div>
+            <div class="bot-cards" id="bot-cards"></div>
         </div>
 
-        <div class="tower player-tower">
-            <p>Spieler-Turm</p>
-            <p class="tower-health">HP: <span id="player-tower-health">100</span></p>
+        <div class="mana-bar">
+            <div class="mana" id="mana">10</div>
+        </div>
+
+        <div class="controls">
+            <button class="card-button" onclick="deployCard('warrior1')">Krieger 1</button>
+            <button class="card-button" onclick="deployCard('warrior2')">Krieger 2</button>
+            <button class="card-button" onclick="deployCard('warrior3')">Krieger 3</button>
         </div>
     </div>
 
