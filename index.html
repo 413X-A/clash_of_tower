@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clash Royale Mini</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        #gameCanvas {
+            background-color: #87CEEB;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        .tower {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: #ff3333;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+        .player-tower {
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .bot-tower {
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .unit {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+        .type1 {
+            background-color: #33ff33; /* Standard-Einheit */
+        }
+        .type2 {
+            background-color: #3366ff; /* Tank */
+        }
+        .type3 {
+            background-color: #ff9933; /* Damage-Dealer */
+        }
+        .bot-unit {
+            background-color: #ff3333;
+        }
+        .unit-buttons {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        .unit-button {
+            padding: 10px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .unit-button:hover {
+            background-color: #666;
+        }
+        #goldDisplay {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            font-weight: bold;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameCanvas">
+        <div class="tower player-tower" id="playerTower">100</div>
+        <div class="tower bot-tower" id="botTower">100</div>
+        <div class="unit-buttons">
+            <button class="unit-button" data-unit="type1">Standard (50 Gold)</button>
+            <button class="unit-button" data-unit="type2">Tank (100 Gold)</button>
+            <button class="unit-button" data-unit="type3">Damage (75 Gold)</button>
+        </div>
+        <div id="goldDisplay">Gold: 0</div>
+    </div>
+
+    <script>
+        const gameCanvas = document.getElementById("gameCanvas");
+        const playerTower = document.getElementById("playerTower");
+        const botTower = document.getElementById("botTower");
+        const goldDisplay = document.getElementById("goldDisplay");
+
+        const playerUnits = [];
+        const botUnits = [];
+
+        let playerTowerHealth = 100;
+        let botTowerHealth = 100;
+        let playerGold = 0;
+        const maxGold = 1000;
+        const goldPerSecond = 10;
+
+        // Unit properties
+        const unitTypes = {
+            type1: { health: 20, damage: 5, speed: 1, cost: 50 },
+            type2: { health: 50, damage: 3, speed: 0.5, cost: 100 },
+            type3: { health: 10, damage: 10, speed: 1.5, cost: 75 }
+        };
+
+        let selectedUnitType = "type1"; // Default unit type
+
+        // Select unit type
+        document.querySelectorAll(".unit-button").forEach(button => {
+            button.addEventListener("click", () => {
+                selectedUnitType = button.dataset.unit;
+            });
+        });
+
+        // Spawn a unit
+        function spawnUnit(x, y, isPlayer, type = "type1") {
+            const unit = document.createElement("div");
+            unit.classList.add("unit", type);
+            if (!isPlayer) {
+                unit.classList.add("bot-unit");
+            }
+            unit.style.left = `${x}px`;
+            unit.style.top = `${y}px`;
+            gameCanvas.appendChild(unit);
+
+            const newUnit = {
+                element: unit,
+                x: x,
+                y: y,
+                health: unitTypes[type].health,
+                damage: unitTypes[type].damage,
+                speed: unitTypes[type].speed,
+                cost: unitTypes[type].cost,
+                isPlayer: isPlayer
+            };
+
+            unit.textContent = newUnit.health;
+
+            if (isPlayer) {
+                playerUnits.push(newUnit);
+            } else {
+                botUnits.push(newUnit);
+            }
+        }
+
+        // Move and attack logic
+        function updateUnits() {
+            // Update player units
+            playerUnits.forEach((unit, unitIndex) => {
+                let target = botUnits.find(botUnit => distance(unit, botUnit) < 40);
+
+                if (target) {
+                    // Attack the target
+                    target.health -= unit.damage;
+                    target.element.textContent = target.health;
+
+                    if (target.health <= 0) {
+                        // Remove dead bot unit
+                        target.element.remove();
+                        botUnits.splice(botUnits.indexOf(target), 1);
+                    }
+                } else {
+                    // Move towards bot tower
+                    unit.y -= unit.speed;
+                    unit.element.style.top = `${unit.y}px`;
+
+                    // Check collision with bot tower
+                    if (unit.y <= 70) {
+                        botTowerHealth -= unit.damage;
+                        botTower.textContent = botTowerHealth;
+                        unit.element.remove();
+                        playerUnits.splice(unitIndex, 1);
+
+                        if (botTowerHealth <= 0) {
+                            alert("You win!");
+                            location.reload();
+                        }
+                    }
+                }
+            });
+
+            // Update bot units
+            botUnits.forEach((unit, unitIndex) => {
+                let target = playerUnits.find(playerUnit => distance(unit, playerUnit) < 40);
+
+                if (target) {
+                    // Attack the target
+                    target.health -= unit.damage;
+                    target.element.textContent = target.health;
+
+                    if (target.health <= 0) {
+                        // Remove dead player unit
+                        target.element.remove();
+                        playerUnits.splice(playerUnits.indexOf(target), 1);
+                    }
+                } else {
+                    // Move towards player tower
+                    unit.y += unit.speed;
+                    unit.element.style.top = `${unit.y}px`;
+
+                    // Check collision with player tower
+                    if (unit.y >= window.innerHeight - 70) {
+                        playerTowerHealth -= unit.damage;
+                        playerTower.textContent = playerTowerHealth;
+                        unit.element.remove();
+                        botUnits.splice(unitIndex, 1);
+
+                        if (playerTowerHealth <= 0) {
+                            alert("Bot wins!");
+                            location.reload();
+                        }
+                    }
+                }
+            });
+        }
+
+        // Calculate distance between two units
+        function distance(unit1, unit2) {
+            const dx = unit1.x - unit2.x;
+            const dy = unit1.y - unit2.y;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        // Generate gold periodically
+        setInterval(() => {
+            playerGold = Math.min(playerGold + goldPerSecond, maxGold);
+            goldDisplay.textContent = `Gold: ${playerGold}`;
+        }, 1000);
+
+        // Spawn bot units periodically
+        setInterval(() => {
+            const botX = Math.random() * (window.innerWidth - 30);
+            const botType = ["type1", "type2", "type3"][Math.floor(Math.random() * 3)];
+            spawnUnit(botX, 80, false, botType);
+        }, 2000);
+
+        // Game loop
+        setInterval(() => {
+            updateUnits();
+        }, 20);
+
+        // Player spawns units by tapping
+        gameCanvas.addEventListener("click", (e) => {
+            const unitCost = unitTypes[selectedUnitType].cost;
+            if (playerGold >= unitCost) {
+                playerGold -= unitCost;
+                goldDisplay.textContent = `Gold: ${playerGold}`;
+                const playerX = e.clientX - 15;
+                const playerY = window.innerHeight - 80;
+                spawnUnit(playerX, playerY, true, selectedUnitType);
+            } else {
+                alert("Not enough gold!");
+            }
+        });
+    </script>
+</body>
+</html>
