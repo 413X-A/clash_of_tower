@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategie-Spiel</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        #gameScreen {
+            flex-grow: 1;
+            position: relative;
+        }
+        #gameCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80%;
+            background-color: #e0e0e0;
+        }
+        .unit {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: blue;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            font-size: 12px;
+        }
+        .bot-unit {
+            background-color: red;
+        }
+        #goldDisplay, #towerHealth {
+            position: fixed;
+            bottom: 100px;
+            left: 10px;
+            background-color: #fff;
+            padding: 10px;
+            font-size: 20px;
+            z-index: 100;
+        }
+        #unitButtons {
+            position: fixed;
+            bottom: 50px;
+            left: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .unit-button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+        }
+        .unit-button:hover {
+            background-color: #555;
+        }
+        #placementBar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-color: #888;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameScreen">
+        <div id="gameCanvas"></div>
+        <div id="goldDisplay">Gold: 0</div>
+        <div id="towerHealth">Turm: 1000 HP</div>
+        <div id="unitButtons">
+            <div class="unit-button" data-unit="type1">Einheit 1 (50 Gold)</div>
+            <div class="unit-button" data-unit="type2">Einheit 2 (100 Gold)</div>
+            <div class="unit-button" data-unit="type3">Einheit 3 (150 Gold)</div>
+        </div>
+        <div id="placementBar"></div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
