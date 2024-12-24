@@ -1,0 +1,68 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+#gameCanvas {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    background-color: #f4f4f4;
+    border: 2px solid #333;
+    overflow: hidden;
+}
+
+#playerTower, #botTower {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: #444;
+    color: white;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#playerTower {
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#botTower {
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.unit-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.unit-button {
+    width: 120px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.unit-button:hover {
+    background-color: #666;
+}
+
+#goldDisplay {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 10px;
+}
